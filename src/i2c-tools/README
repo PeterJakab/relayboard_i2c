@@ -1,0 +1,48 @@
+1. Install i2c-tools
+
+yum install i2c-tools # pidora
+apt-get install i2c-tools # raspbian
+
+2. Find the I2C buses on the master:
+
+# i2cdetect  -l
+i2c-0	unknown   	bcm2708_i2c.0                   	N/A
+i2c-1	unknown   	bcm2708_i2c.1                   	N/A
+
+3. Scan the buses for the relay module address:
+
+# i2cdetect -y 1
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+20: 20 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+70: -- -- -- -- -- -- -- --
+
+# i2cdetect -y 1
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+70: -- -- -- -- -- -- -- --
+
+The relay module address was found on the i2c-0 bus with address 0x20 (setup
+with SW1). The bus number (0) and address (0x20) detected will be used in
+the following steps to select the relay module.
+
+4. Set the MCP23008 IODIR register to zero:
+
+# i2cset -y 0 0x20 0x0 0x0 # IODIR
+
+5. Set the MCP23008 OLAT register to control the relays:
+
+i2cset -y 0 0x20 0xa 0xff # OLAT, all relays ON
+i2cset -y 0 0x20 0xa 0xf0 # OLAT, turn CN1, CN2, CN3, CN4 OFF, CN5, CN6, CN7, CN8 ON
+i2cset -y 0 0x20 0xa 0x00 # OLAT, all relays OFF

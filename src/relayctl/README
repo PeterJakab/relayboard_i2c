@@ -1,0 +1,18 @@
+Usage: relayctl [options] <command> [value]
+Control the relay board
+
+ -b, --bus <I2C bus>
+    Use the given I2C bus to access the relay board, default=/dev/i2c-0
+ -a, --address <I2C address>
+    Use the given I2C address to access the relay board, default=0x20
+ -o, --output <base>
+    Set output format. Base x=hexadecimal (16), b=binary (2), d=decimal (10), default=x
+ -v, --verbose
+    Verbose mode
+ -V, --version
+    Show program version
+ -h, --help
+    Show usage and help
+
+ <command>: getport | setport <n> | setbit <n> | clearbit <n>
+
