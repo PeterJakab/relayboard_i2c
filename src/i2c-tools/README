@@ -11,7 +11,7 @@ i2c-1	unknown   	bcm2708_i2c.1                   	N/A
 
 3. Scan the buses for the relay module address:
 
-# i2cdetect -y 1
+# i2cdetect -y 0
      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
 00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
 10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
