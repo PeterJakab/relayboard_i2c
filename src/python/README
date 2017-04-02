@@ -1,0 +1,47 @@
+1. copy and extract libraries to the Raspberry Pi
+$ wget https://github.com/PeterJakab/relayboard_i2c/archive/master.zip
+$ unzip master.zip
+
+2. install the libraries and tools on the Raspberry Pi
+$ sudo apt-get install python-smbus i2c-tools python-usb
+
+3. add your user to the i2c group
+$ sudo usermod -a -G i2c pi
+
+4. setup the Raspberry Pi pins
+Start the config utility
+$ sudo raspi-config
+Go to 5. Interfacing options
+Select P5 I2C
+Select yes to enable the I2C interface
+Select Finish
+Power off the Raspberry Pi
+$ sudo poweroff
+Remove power from the Raspbeery Pi by unplugging the microUSB cord
+
+5. connect the relay module to the Raspberry Pi pins as described
+P1 pin - CN21 pin, refer to http://pi.gadgetoid.com/pinout
+1 (3V3) - 1 (VDD)
+9 (GND) - 2 (GND)
+3 (SDA) - 3 (SDA)
+5 (SCL) - 4 (SCL)
+
+connect power to CN22 on the relay module.
+* if the blue relays on the relay module are 12VDC, use a 12V DC power supply
+* if the blue relays on the relay module are 5VDC, use a 5V DC power supply
+
+6. power on the Raspberry Pi and edit the example code as necessary:
+
+If necessary, adjust the bus and address parameters in the test_i2c.py file:
+r = relayboard.Relayboard(type='i2c-8ch', bus=0, address=0x20)
+
+where
+* bus is 0 for older Raspberry Pi-s and 1 for the Raspberry Pi Zero (W)
+* address is setup with SW1 on the board, the default is 0x20 (switches are ON)
+
+Run the example code:
+$ ./test_i2c.py
+
+Enter a channel number between 1 and 8
+Enter On, Off or Toggle
+Listen to the relay clicking
