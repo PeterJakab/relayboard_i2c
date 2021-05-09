@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2
 
 import relayboard
 r = relayboard.Relayboard(type='i2c-8ch', bus=1, address=0x20)
